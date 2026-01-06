@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBucketRequest;
 use App\Models\Bucket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BucketController extends Controller
 {
@@ -16,6 +17,8 @@ class BucketController extends Controller
             'name' => $data['name'],
             'user_id' => $request->user()->id,
         ]);
+
+        Storage::disk('ftp')->makeDirectory($data['name']);
     }
 
     public function destroy(Request $request, Bucket $bucket)
