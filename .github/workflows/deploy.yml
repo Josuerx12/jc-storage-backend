@@ -1,0 +1,50 @@
+name: Deploy Automático
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          touch ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Teste de conexão SSH
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          pwd
+          ls -la
+          EOF
+
+      - name: Deploy no servidor
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} \
+          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd /home2/wwwjcdev/domains/jcstorage.jcdev.com.br/jc-storage-backend
+
+            git pull origin main
+
+            cp -rT /home2/wwwjcdev/domains/jcstorage.jcdev.com.br/jc-storage-backend /home2/wwwjcdev/domains/jcstorage.jcdev.com.br/
+
+            cd ..
+
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+
+            php artisan migrate --force
+            php artisan db:seed
+            php artisan cache:clear
+            php artisan config:cache
+            php artisan route:cache
+          EOF
