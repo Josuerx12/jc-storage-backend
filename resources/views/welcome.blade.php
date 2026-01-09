@@ -26,7 +26,7 @@
                 <div class="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center font-bold">
                     JC
                 </div>
-                <span class="text-lg font-semibold">JC Storage</span>
+                <span class="text-lg font-semibold">Storage</span>
             </div>
 
             <nav class="hidden md:flex items-center gap-6 text-sm text-neutral-300">
