@@ -18,8 +18,8 @@ Route::middleware('auth:sanctum')->group(function() {
 });
 
 Route::group(['prefix' => 'auth'], function() {
-    Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
-    Route::post('/register', [App\Http\Controllers\UserController::class, 'store']);
+    Route::post('/login', [App\Http\Controllers\UserController::class, 'login'])->name('api.login');
+    Route::post('/register', [App\Http\Controllers\UserController::class, 'store'])->name('api.register');
 });
 
 Route::get('/health', function () {
