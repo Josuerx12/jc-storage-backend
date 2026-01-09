@@ -21,3 +21,11 @@ Route::group(['prefix' => 'auth'], function() {
     Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
     Route::post('/register', [App\Http\Controllers\UserController::class, 'store']);
 });
+
+Route::get('/health', function () {
+    return response()->json([
+        'name' => config('app.name'),
+        'status' => 'ok',
+        'version' => '1.0.0'
+    ], 200);
+});
