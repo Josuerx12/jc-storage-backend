@@ -66,9 +66,23 @@ class BucketController extends Controller
 
     public function showIndex(Request $request)
     {
-        return view('dashboard.buckets.bucket', [
+        return view('dashboard.buckets.index', [
             'buckets' => Bucket::where('user_id', $request->user()->id)->get(),
         ]);
+    }
+
+    public function showFiles(Request $request, Bucket $bucket)
+    {
+        $isAuthorized = $request->user()->id === $bucket->user_id;
+
+        if ($isAuthorized) {
+            return view('dashboard.buckets.files.index', [
+                'bucket' => $bucket,
+                'files' => Storage::disk('ftp')->files($bucket->name),
+            ]);
+        }
+
+        return redirect()->route('dashboard.buckets')->with('error', 'Não autorizado a acessar este bucket.');
     }
 
     public function show(Request $request, Bucket $bucket)

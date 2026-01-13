@@ -1,6 +1,7 @@
 <x-layout title="JC Storage - Buckets">
   <div class="max-w-7xl mx-auto px-6 py-12">
-    <x-back-button />
+    <x-back-button url="{{ route('dashboard') }}" />
+
     <h2 class="text-3xl font-bold text-white">
       Gerencie seus Buckets
     </h2>

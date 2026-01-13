@@ -1,6 +1,6 @@
 <x-layout title="JC Storage - Buckets">
   <div class="max-w-7xl mx-auto px-6 py-12">
-    <x-back-button />
+    <x-back-button url="{{ route('dashboard.buckets') }}" />
 
     <h2>Detalhes do Bucket: {{ $bucket->name }}</h2>
 
@@ -27,5 +27,11 @@
       {{-- <button type="submit"
         class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">Criar Bucket</button> --}}
     </form>
+
+    <div class="mt-8">
+      <a href="{{ route('dashboard.buckets.files', $bucket) }}"
+        class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">Ver Arquivos do
+        Bucket</a>
+    </div>
   </div>
 </x-layout>

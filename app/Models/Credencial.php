@@ -19,6 +19,10 @@ class Credencial extends Model
         'updated_at',
     ];
 
+    protected $hidden = [
+        'secret_key'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

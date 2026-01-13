@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ $title }}</title>
+  <meta name="description" content="JC Storage - Armazenamento em Nuvem Simples e Seguro">
+  <meta name="author" content="JC Dev">
+  <meta name="keywords" content="armazenamento em nuvem, arquivos, segurança, backup, JC Storage">
+
+  <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net">

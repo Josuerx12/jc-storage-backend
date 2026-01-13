@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BucketController;
+use App\Http\Controllers\CredencialController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,9 +29,10 @@ Route::middleware('auth')->group(function () {
         return view('dashboard.index');
     })->name('dashboard');
 
-    Route::get('/dashboard/credentials', function () {
-        return view('dashboard.credentials');
-    })->name('dashboard.credentials');
+    Route::post('/dashboard/credentials', [CredencialController::class, 'store'])->name('dashboard.credentials.store');
+    
+    Route::get('/dashboard/credentials', [CredencialController::class, 'index'])->name('dashboard.credentials');
+    Route::get('/dashboard/credentials/create', [CredencialController::class, 'create'])->name('dashboard.credentials.create'); 
 
     Route::post('buckets', [BucketController::class, 'store'])->name('buckets.store');
     Route::delete('buckets/{bucket}', [BucketController::class, 'destroy'])->name('buckets.destroy');
@@ -45,6 +47,12 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboard/buckets/{bucket}/delete', [BucketController::class, 'delete'])
     ->name('dashboard.buckets.delete')
+    ->missing(fn () => redirect()
+    ->route('dashboard.buckets')
+    ->with('error', 'Bucket não encontrado.'));
+
+    Route::get('/dashboard/buckets/{bucket}/files', [BucketController::class, 'showFiles'])
+    ->name('dashboard.buckets.files')
     ->missing(fn () => redirect()
     ->route('dashboard.buckets')
     ->with('error', 'Bucket não encontrado.'));
