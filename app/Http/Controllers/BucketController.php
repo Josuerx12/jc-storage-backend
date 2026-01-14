@@ -50,7 +50,10 @@ class BucketController extends Controller
         $isAuthorized = $request->user()->id === $bucket->user_id;
 
         if ($isAuthorized) {
+            Storage::disk('ftp')->deleteDirectory($bucket->name);
+            
             $bucket->delete();
+
             return redirect()->route('dashboard.buckets')->with('success', 'Bucket deletado com sucesso!');
         }
 
