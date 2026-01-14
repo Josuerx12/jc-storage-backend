@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BucketController;
 use App\Http\Controllers\CredencialController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +26,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/dashboard/credentials', [CredencialController::class, 'store'])->name('dashboard.credentials.store');
     Route::delete('/dashboard/credentials/{credential}', [CredencialController::class, 'destroy'])->name('credentials.destroy');

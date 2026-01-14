@@ -15,11 +15,11 @@
       <p class="text-neutral-400 mt-2">Bem-vindo ao seu painel de controle.</p>
 
       <div class="flex flex-wrap mt-10 gap-4 justify-between">
-        <x-card title="Buckets Ativos" value="0" lucideIconName="paint-bucket" buttonText="Ver Buckets"
-          buttonLink="/dashboard/buckets" />
-        <x-card title="Credenciais Ativas" value="0" lucideIconName="key" buttonText="Ver Credenciais"
-          buttonLink="/dashboard/credentials" />
-        <x-card title="Total de Arquivos" value="0" lucideIconName="folder" />
+        <x-card title="Buckets Ativos" value="{{ $buckets->count() }}" lucideIconName="paint-bucket"
+          buttonText="Ver Buckets" buttonLink="/dashboard/buckets" />
+        <x-card title="Credenciais Ativas" value="{{ $credentials->count() }}" lucideIconName="key"
+          buttonText="Ver Credenciais" buttonLink="/dashboard/credentials" />
+        <x-card title="Total de Arquivos" value="{{ $filesCount }}" lucideIconName="folder" />
       </div>
     </div>
   </main>
