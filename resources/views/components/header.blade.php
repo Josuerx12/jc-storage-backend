@@ -10,9 +10,16 @@
     <nav class="hidden md:flex items-center gap-6 text-sm text-neutral-300">
       <a href="/docs" class="hover:text-white transition">Documentação</a>
       @auth
-        <a href="/dashboard">
+        <a class="hover:text-white transition" href="/dashboard">
           Dashboard
         </a>
+        <form method="POST" title="Desconectar da sessão atual" action="{{ route('logout') }}">
+          @csrf
+          <button type="submit"
+            class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-white transition cursor-pointer">
+            Sair
+          </button>
+        </form>
       @endauth
       @guest
         <a href="/login" class="hover:text-white transition">Entrar</a>
