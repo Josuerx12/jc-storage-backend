@@ -1,6 +1,6 @@
 import './bootstrap';
-import Alpine from 'alpinejs'
- 
+import Alpine from 'alpinejs';
+
 window.Alpine = Alpine
 
 Alpine.data('navbar', () => ({
@@ -20,15 +20,9 @@ Alpine.data('credentialForm', () => ({
   },
 
   generateCredentials() {
-    this.accessKey = this.generateRandomKey()
-    this.secretKey = this.generateRandomKey()
-
-    console.log(this.accessKey, this.secretKey)
+    this.accessKey = crypto.randomUUID()
+    this.secretKey = crypto.randomUUID()
   },
-
-  generateRandomKey() {
-    return crypto.randomUUID().replace(/-/g, '')
-  }
 }))
 
 

@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-6 py-12">
     <x-back-button url="{{ route('dashboard') }}" />
     <h2 class="text-3xl font-bold text-white">
-      Gerencie suas Credenciais
+      Gerencie suas credenciais
     </h2>
 
     <div class="w-full mr-0 flex justify-end items-center gap-4 mt-6">
@@ -17,10 +17,9 @@
 
     @if ($credentials->isEmpty())
       <p class="mt-6 ">
-        Você ainda não possui buckets. Clique em <a href="{{ route('dashboard.buckets.create') }}"
-          class="text-blue-400">Criar Novo Bucket</a> para
-        começar a armazenar seus
-        arquivos.
+        Você ainda não possui credenciais. Clique em <a href="{{ route('dashboard.credentials.create') }}"
+          class="text-blue-400">criar nova credencial</a> para
+        começar a usufruir da api.
       </p>
     @endif
 
@@ -42,13 +41,13 @@
               <td class="p-4 text-white/80">{{ $credential->name }}</td>
               <td class="p-4 text-white/80">{{ $credential->created_at->format('d/m/Y') }}</td>
               <td class="p-4 text-white/80 flex gap-4">
-                <a href="{{ route('dashboard.credentials', $credential) }}" class="text-blue-400 hover:underline">Ver
+                <a href="{{ route('dashboard.credentials.show', $credential) }}"
+                  class="text-blue-400 hover:underline">Ver
                   Detalhes</a>
                 {{-- <a href="#" class="text-yellow-400 hover:underline">Editar</a> --}}
 
-                <a href="{{ route('dashboard.credentials', $credential) }}"
+                <a href="{{ route('dashboard.credentials.delete', $credential) }}"
                   class="text-red-400 hover:underline">Excluir</a>
-
               </td>
             </tr>
           @endforeach

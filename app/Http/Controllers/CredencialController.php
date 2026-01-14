@@ -35,4 +35,39 @@ class CredencialController extends Controller
     {
         return view('dashboard.credentials.create');
     }
+
+    public function show(Request $request, Credencial $credential)
+    {
+        $isAuthorized = $credential->user_id === auth()->guard('web')->user()->id;
+
+        if (! $isAuthorized) {
+            return redirect()->route('dashboard.credentials')->with('error', 'Você não tem permissão para ver esta credencial.');
+        }
+
+        return view('dashboard.credentials.show', compact('credential'));
+    }
+
+    public function delete(Request $request, Credencial $credential)
+    {
+        $isAuthorized = $credential->user_id === auth()->guard('web')->user()->id;
+
+        if (! $isAuthorized) {
+            return redirect()->route('dashboard.credentials')->with('error', 'Você não tem permissão para deletar esta credencial.');
+        }
+
+        return view('dashboard.credentials.delete', compact('credential'));
+    }
+
+    public function destroy(Request $request, Credencial $credential)
+    {
+        $isAuthorized = $credential->user_id === auth()->guard('web')->user()->id;
+
+        if (! $isAuthorized) {
+            return redirect()->route('dashboard.credentials')->with('error', 'Você não tem permissão para deletar esta credencial.');
+        }
+
+        $credential->delete();
+
+        return redirect()->route('dashboard.credentials')->with('success', 'Credencial deletada com sucesso.');
+    }
 }

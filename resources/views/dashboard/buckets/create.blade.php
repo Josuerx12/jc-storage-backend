@@ -1,6 +1,6 @@
 <x-layout title="JC Storage - Criar Novo Bucket">
   <div class="max-w-7xl mx-auto px-6 py-12">
-    <x-back-button />
+    <x-back-button url="{{ route('dashboard.buckets') }}" />
     <h2 class="text-3xl font-bold text-white">
       Criar Novo Bucket
     </h2>

@@ -3,7 +3,7 @@
     <x-back-button url="{{ route('dashboard.credentials') }}" />
 
     <h2 class="text-3xl font-bold text-white">
-      Criar Nova Credencial
+      Criar nova credencial
     </h2>
 
     <form action="{{ route('dashboard.credentials.store') }}" method="POST" class="mt-8 space-y-6">
@@ -46,10 +46,6 @@
         Após gerar as credenciais, certifique-se de copiá-las e armazená-las em um local seguro. Você não poderá
         visualizar a Secret Key novamente após sair desta página.
       </p>
-
-      <a x-show="accessKey && secretKey" class="block text-blue-500 hover:underline mb-4 cursor-not-allowed">
-        Baixar Credenciais (em breve)
-      </a>
 
       <!-- Botões -->
       <div class="flex gap-4">

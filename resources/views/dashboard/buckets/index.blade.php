@@ -3,7 +3,7 @@
     <x-back-button url="{{ route('dashboard') }}" />
 
     <h2 class="text-3xl font-bold text-white">
-      Gerencie seus Buckets
+      Gerencie seus buckets
     </h2>
     <p class="mt-2 text-white/60">
       Crie, visualize e gerencie seus buckets de armazenamento com facilidade.
@@ -22,7 +22,7 @@
     @if ($buckets->isEmpty())
       <p class="mt-6 ">
         Você ainda não possui buckets. Clique em <a href="{{ route('dashboard.buckets.create') }}"
-          class="text-blue-400">Criar Novo Bucket</a> para
+          class="text-blue-400">criar novo bucket</a> para
         começar a armazenar seus
         arquivos.
       </p>

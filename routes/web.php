@@ -30,9 +30,12 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::post('/dashboard/credentials', [CredencialController::class, 'store'])->name('dashboard.credentials.store');
-    
+    Route::delete('/dashboard/credentials/{credential}', [CredencialController::class, 'destroy'])->name('credentials.destroy');
+
     Route::get('/dashboard/credentials', [CredencialController::class, 'index'])->name('dashboard.credentials');
+    Route::get('/dashboard/credentials/{credential}', [CredencialController::class, 'show'])->name('dashboard.credentials.show');
     Route::get('/dashboard/credentials/create', [CredencialController::class, 'create'])->name('dashboard.credentials.create'); 
+    Route::get('/dashboard/credentials/{credential}/delete', [CredencialController::class, 'delete'])->name('dashboard.credentials.delete');
 
     Route::post('buckets', [BucketController::class, 'store'])->name('buckets.store');
     Route::delete('buckets/{bucket}', [BucketController::class, 'destroy'])->name('buckets.destroy');
