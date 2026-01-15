@@ -58,6 +58,8 @@
               </tr>
             @endforeach
         </table>
+
+        {{ $buckets->links() }}
       </div>
     @endif
   </div>

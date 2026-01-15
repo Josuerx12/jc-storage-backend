@@ -25,7 +25,7 @@ class StoreFileRequest extends FormRequest
             'file' => 'required|file',
             'bucket' => 'required|string',
             'filename' => 'sometimes|string',
-            'isPrivate' => 'sometimes|boolean',
+            'isPrivate' => 'sometimes|string|in:true,false',
         ];
     }
 }

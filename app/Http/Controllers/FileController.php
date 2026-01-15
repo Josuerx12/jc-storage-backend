@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
@@ -19,8 +20,10 @@ class FileController extends Controller
 
         $file = $validated['file'];
 
+        $credential = Credencial::where('access_key', $request->header('access_key'))->first();
+
         $bucket = Bucket::where('name', $validated['bucket'])
-            ->where('user_id', $request->user()->id)
+            ->where('user_id', $credential->user_id)
             ->first();
 
         if (!$bucket) {
@@ -35,8 +38,9 @@ class FileController extends Controller
 
         $filename = $validated['filename'] ?? $file->getClientOriginalName();
 
+        $model->id = Str::uuid();
         $model->filename = $filename;
-        $model->is_private = typeOf($validated['isPrivate']) === 'boolean' ? $validated['isPrivate'] : false;
+        $model->is_private = isset($validated['isPrivate']) && $validated['isPrivate'] === 'true' ? true : false;
         $model->path = $ftpPath . basename($storagedFile);
         $model->bucket_id = $bucket->id;
         $model->size = $file->getSize();
@@ -46,7 +50,8 @@ class FileController extends Controller
 
         return response()->json([
             'message' => 'Arquivo salvo com sucesso!',
-            'file' => $model
+            'file' => $model,
+            'url' => $validated['isPrivate'] === 'true' ? null : route('files.public.download', ['id' => $model->id])
         ], 201);
     }
 
@@ -85,10 +90,10 @@ class FileController extends Controller
             abort(404, 'Arquivo não encontrado');
         }
 
-        return response()->streamDownload(function () use ($stream) {
+            return response()->streamDownload(function () use ($stream) {
             fpassthru($stream);
             fclose($stream);
-        }, $file->filename);
+        }, $file->filename . '.' . pathinfo($file->mime_type, PATHINFO_EXTENSION));
     }
 
     public function publicDownload($id)
@@ -108,7 +113,7 @@ class FileController extends Controller
         return response()->streamDownload(function () use ($stream) {
             fpassthru($stream);
             fclose($stream);
-        }, $file->filename);
+        }, $file->filename . '.' . pathinfo($file->mime_type, PATHINFO_EXTENSION));
     }
 
     public function delete(Request $request, File $file)

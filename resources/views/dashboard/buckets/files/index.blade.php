@@ -15,7 +15,7 @@
           data-lucide="filter"></i></button>
     </div>
 
-            @if ($files->isNotEmpty())
+        @if ($files->isNotEmpty())
         <div class="mt-6 w-full overflow-x-auto">
           <table class="w-full table-auto border-collapse">
             <thead>
@@ -30,9 +30,9 @@
             <tbody>
               @foreach ($files as $file)
                 <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
-                  <td class="p-4 text-white/80">{{ $file->name }}</td>
+                  <td class="p-4 text-white/80">{{ $file->filename }}</td>
                   <td class="p-4 text-white/80">{{ number_format($file->size / 1024, 2) }} KB</td>
-                  <td class="p-4 text-white/80">{{ $file->type }}</td>
+                  <td class="p-4 text-white/80">{{ $file->mime_type }}</td>
                   <td class="p-4 text-white/80">{{ $file->created_at->format('d/m/Y H:i') }}</td>
                   <td class="p-4 text-white/80">
                     <a href="#" class="text-blue-500 hover:underline">Download</a>

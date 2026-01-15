@@ -53,6 +53,8 @@
               </tr>
             @endforeach
         </table>
+
+        {{ $credentials->links() }}
       </div>
     @endif
   </div>

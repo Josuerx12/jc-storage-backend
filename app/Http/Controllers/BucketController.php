@@ -65,13 +65,13 @@ class BucketController extends Controller
     {
         $params = $request->query();
 
-        return Bucket::where('user_id', $request->user()->id)->where('name', 'like', '%' . ($params['search'] ?? '') . '%')->paginate(15);
+        return Bucket::where('user_id', $request->user()->id)->where('name', 'like', '%' . ($params['search'] ?? '') . '%')->paginate(10);
     }
 
     public function showIndex(Request $request)
     {
         return view('dashboard.buckets.index', [
-            'buckets' => Bucket::where('user_id', $request->user()->id)->get(),
+            'buckets' => Bucket::where('user_id', $request->user()->id)->paginate(10),
         ]);
     }
 
