@@ -59,6 +59,13 @@ Route::middleware('auth')->group(function () {
     ->missing(fn () => redirect()
     ->route('dashboard.buckets')
     ->with('error', 'Bucket não encontrado.'));
+
+    Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');
+    Route::get('/dashboard/buckets/{bucket}/files/{file}/delete', [FileController::class, 'deleteView'])
+    ->name('dashboard.buckets.files.delete')
+    ->missing(fn () => redirect()
+    ->route('dashboard.buckets.files', $bucket)
+    ->with('error', 'Arquivo não encontrado.'));
 });
 
 Route::get('/files/{id}', [FileController::class, 'download'])

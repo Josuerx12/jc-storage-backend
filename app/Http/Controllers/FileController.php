@@ -131,4 +131,27 @@ class FileController extends Controller
 
         return response()->json(['message' => 'Arquivo deletado com sucesso!']);
     }
-}
+
+    public function destroy(Request $request, File $file)
+    {
+        $isAuthorized = $request->user()->id === $file->bucket->user_id;
+
+        if (! $isAuthorized) {
+            return redirect()
+                ->route('dashboard.buckets.files', $file->bucket)
+                ->with('error', 'Não autorizado.');
+        }
+
+        Storage::disk('ftp')->delete($file->path);
+        $file->delete();
+
+        return redirect()
+            ->route('dashboard.buckets.files', $file->bucket)
+            ->with('success', 'Arquivo deletado com sucesso!');
+    }
+
+    public function deleteView(Request $request,Bucket $bucket, File $file)
+    {
+        return view('dashboard.buckets.files.delete', ['bucket' => $bucket, 'file' => $file]);
+    }
+};
