@@ -24,6 +24,8 @@ class StoreFileRequest extends FormRequest
         return [
             'file' => 'required|file',
             'bucket' => 'required|string',
+            'filename' => 'sometimes|string',
+            'isPrivate' => 'sometimes|boolean',
         ];
     }
 }

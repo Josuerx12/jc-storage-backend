@@ -3,11 +3,12 @@
 use App\Http\Controllers\BucketController;
 use App\Http\Controllers\CredencialController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/docs', function () {
@@ -60,6 +61,9 @@ Route::middleware('auth')->group(function () {
     ->with('error', 'Bucket não encontrado.'));
 });
 
-Route::get('/files/{id}', [App\Http\Controllers\FileController::class, 'download'])
+Route::get('/files/{id}', [FileController::class, 'download'])
     ->name('files.download')
     ->middleware('signed');
+
+Route::get('/public/files/{id}', [FileController::class, 'publicDownload'])
+    ->name('files.public.download');

@@ -24,34 +24,36 @@
     @endif
 
     @if ($credentials->isNotEmpty())
-      <table class="w-full mt-6">
-        <thead>
-          <tr>
-            <th class="text-left text-white/60 p-4">ID</th>
-            <th class="text-left text-white/60 p-4">Nome</th>
-            <th class="text-left text-white/60 p-4">Data de Criação</th>
-            <th class="text-left text-white/60 p-4">Ações</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          @foreach ($credentials as $credential)
-            <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
-              <td class="p-4 text-white/80">{{ $credential->id }}</td>
-              <td class="p-4 text-white/80">{{ $credential->name }}</td>
-              <td class="p-4 text-white/80">{{ $credential->created_at->format('d/m/Y') }}</td>
-              <td class="p-4 text-white/80 flex gap-4">
-                <a href="{{ route('dashboard.credentials.show', $credential) }}"
-                  class="text-blue-400 hover:underline">Ver
-                  Detalhes</a>
-                {{-- <a href="#" class="text-yellow-400 hover:underline">Editar</a> --}}
-
-                <a href="{{ route('dashboard.credentials.delete', $credential) }}"
-                  class="text-red-400 hover:underline">Excluir</a>
-              </td>
+      <div class="mt-6 w-full overflow-x-auto">
+        <table class="w-full table-auto border-collapse">
+          <thead>
+            <tr>
+              <th class="text-left text-white/60 p-4">ID</th>
+              <th class="text-left text-white/60 p-4">Nome</th>
+              <th class="text-left text-white/60 p-4">Data de Criação</th>
+              <th class="text-left text-white/60 p-4">Ações</th>
             </tr>
-          @endforeach
-      </table>
+          </thead>
+
+          <tbody>
+            @foreach ($credentials as $credential)
+              <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+                <td class="p-4 text-white/80">{{ $credential->id }}</td>
+                <td class="p-4 text-white/80">{{ $credential->name }}</td>
+                <td class="p-4 text-white/80">{{ $credential->created_at->format('d/m/Y') }}</td>
+                <td class="p-4 text-white/80 flex gap-4">
+                  <a href="{{ route('dashboard.credentials.show', $credential) }}"
+                    class="text-blue-400 hover:underline">Ver
+                    Detalhes</a>
+                  {{-- <a href="#" class="text-yellow-400 hover:underline">Editar</a> --}}
+
+                  <a href="{{ route('dashboard.credentials.delete', $credential) }}"
+                    class="text-red-400 hover:underline">Excluir</a>
+                </td>
+              </tr>
+            @endforeach
+        </table>
+      </div>
     @endif
   </div>
 </x-layout>

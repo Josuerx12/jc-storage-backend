@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-6 py-12">
     <x-back-button url="{{ route('dashboard.buckets') }}" />
 
-    <h2>Detalhes do Bucket: {{ $bucket->name }}</h2>
+    <h2 class="text-2xl font-bold">Detalhes do Bucket: {{ $bucket->name }}</h2>
 
     <form class="mt-6 max-w-lg">
       @csrf

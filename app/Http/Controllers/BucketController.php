@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBucketRequest;
 use App\Models\Bucket;
+use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BucketController extends Controller
 {
@@ -19,12 +21,11 @@ class BucketController extends Controller
         $data = $request->validated();
 
         Bucket::create([
-            'name' => $data['name'],
+            'name' => Str::lower($data['name']),
             'user_id' => $request->user()->id,
         ]);
 
-        Storage::disk('ftp')->makeDirectory($data['name']);
-
+        Storage::disk('ftp')->makeDirectory(Str::lower($data['name']));
         return redirect()->route('dashboard.buckets')->with('success', 'Bucket criado com sucesso!');
     }
 
@@ -64,7 +65,7 @@ class BucketController extends Controller
     {
         $params = $request->query();
 
-        return Bucket::where('user_id', $request->user()->id)->paginate($params['per_page'] ?? 15, ['*'], 'page', $params['page'] ?? 1);
+        return Bucket::where('user_id', $request->user()->id)->where('name', 'like', '%' . ($params['search'] ?? '') . '%')->paginate(15);
     }
 
     public function showIndex(Request $request)
@@ -81,7 +82,7 @@ class BucketController extends Controller
         if ($isAuthorized) {
             return view('dashboard.buckets.files.index', [
                 'bucket' => $bucket,
-                'files' => Storage::disk('ftp')->files($bucket->name),
+                'files' => File::where('bucket_id', $bucket->id)->paginate(),
             ]);
         }
 

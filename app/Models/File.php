@@ -15,6 +15,7 @@ class File extends Model
         'filename',
         'path',
         'size',
+        'is_private',
         'mime_type',
         'created_at',
         'updated_at',

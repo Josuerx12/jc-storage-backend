@@ -10,7 +10,7 @@ class CredencialController extends Controller
 {
     public function index(Request $request)
     {
-        $credentials = Credencial::where('user_id', auth()->guard('web')->user()->id)->get();
+        $credentials = Credencial::where('user_id', auth()->guard('web')->user()->id)->where('name', 'like', '%' . $request->query('search') ?? '' . '%')->paginate(10);
 
         return view('dashboard.credentials.index', compact('credentials'));
     }

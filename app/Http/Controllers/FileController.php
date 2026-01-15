@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFileRequest;
 use App\Models\Bucket;
+use App\Models\Credencial;
 use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,7 +33,10 @@ class FileController extends Controller
 
         $model = new File();
 
-        $model->filename = $file->getClientOriginalName();
+        $filename = $validated['filename'] ?? $file->getClientOriginalName();
+
+        $model->filename = $filename;
+        $model->is_private = typeOf($validated['isPrivate']) === 'boolean' ? $validated['isPrivate'] : false;
         $model->path = $ftpPath . basename($storagedFile);
         $model->bucket_id = $bucket->id;
         $model->size = $file->getSize();
@@ -85,5 +89,41 @@ class FileController extends Controller
             fpassthru($stream);
             fclose($stream);
         }, $file->filename);
+    }
+
+    public function publicDownload($id)
+    {
+        $file = File::findOrFail($id);
+
+        if($file->is_private) {
+            abort(403, 'Acesso negado. O arquivo é privado.');
+        }
+
+        $stream = Storage::disk('ftp')->readStream($file->path);
+
+        if (! $stream) {
+            abort(404, 'Arquivo não encontrado');
+        }
+
+        return response()->streamDownload(function () use ($stream) {
+            fpassthru($stream);
+            fclose($stream);
+        }, $file->filename);
+    }
+
+    public function delete(Request $request, File $file)
+    {    
+        $credential = Credencial::where('access_key', $request->header('access_key'))->first();
+
+        $isAuthorized = $credential && $credential->user_id === $file->bucket->user_id;
+
+        if (! $isAuthorized) {
+            return response()->json(['message' => 'Não autorizado'], 403);
+        }
+
+        Storage::disk('ftp')->delete($file->path);
+        $file->delete();
+
+        return response()->json(['message' => 'Arquivo deletado com sucesso!']);
     }
 }
