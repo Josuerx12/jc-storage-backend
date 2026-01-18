@@ -21,6 +21,10 @@ class File extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'is_private' => 'boolean',
+    ];
+
     public function bucket()
     {
         return $this->belongsTo(Bucket::class);
