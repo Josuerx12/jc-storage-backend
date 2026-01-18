@@ -96,10 +96,6 @@ class FileController extends Controller
 
     public function publicDownload(File $file)
     {
-        if($file->is_private === true) {
-            abort(403, 'Acesso negado. O arquivo é privado.');
-        }
-
         $stream = Storage::disk('ftp')->readStream($file->path);
 
         if (! $stream) {
