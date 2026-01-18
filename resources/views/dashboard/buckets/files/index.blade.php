@@ -15,7 +15,7 @@
           data-lucide="filter"></i></button>
     </div>
 
-               @if ($files->isNotEmpty())
+                 @if ($files->isNotEmpty())
         <div class="mt-6 w-full overflow-x-auto">
           <table class="w-full table-auto border-collapse">
             <thead>
@@ -35,7 +35,7 @@
                   <td class="p-4 text-white/80">{{ $file->mime_type }}</td>
                   <td class="p-4 text-white/80">{{ $file->created_at->format('d/m/Y H:i') }}</td>
                   <td class="p-4 text-white/80">
-                    <a href="{{ route('files.public.download', ['id' => $file->id]) }}"
+                    <a href="{{ route('files.public.download', [$file]) }}"
                       class="text-blue-500 hover:underline">Download</a>
                     |
                     <a href="{{ route('dashboard.buckets.files.delete', [$bucket, $file]) }}"

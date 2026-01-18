@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 Route::get('/', function () {
     return view('home');
@@ -15,11 +16,13 @@ Route::get('/docs', function () {
     return view('docs');
 });
 
-Route::get('/files/{id}', [FileController::class, 'download'])
+Route::get('/files/{file}', [FileController::class, 'download'])
 ->name('files.download')
+->missing(fn (Response $res) => $res->setStatusCode(404))
 ->middleware('signed');
 
-Route::get('/public/files/{id}', [FileController::class, 'publicDownload'])
+Route::get('/public/files/{file}', [FileController::class, 'publicDownload'])
+->missing(fn (Response $res) => $res->setStatusCode(404))
 ->name('files.public.download');
 
 // Auth routes (guest only)
