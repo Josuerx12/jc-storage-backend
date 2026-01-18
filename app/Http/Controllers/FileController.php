@@ -8,6 +8,7 @@ use App\Models\Credencial;
 use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -96,20 +97,29 @@ class FileController extends Controller
 
     public function publicDownload(File $file)
     {
+        Log::info('PublicDownload chamado', ['file_id' => $file->id, 'is_private' => $file->is_private]);
+
         if($file->is_private === true) {
+            Log::warning('Tentativa de acesso a arquivo privado', ['file_id' => $file->id]);
             abort(403, 'Acesso negado. O arquivo é privado.');
         }
 
-        $stream = Storage::disk('ftp')->readStream($file->path);
+        try {
+            $stream = Storage::disk('ftp')->readStream($file->path);
 
-        if (! $stream) {
-            abort(404, 'Arquivo não encontrado');
+            if (! $stream) {
+                Log::error('Arquivo não encontrado no FTP', ['path' => $file->path, 'file_id' => $file->id]);
+                abort(404, 'Arquivo não encontrado');
+            }
+
+            return response()->streamDownload(function () use ($stream) {
+                fpassthru($stream);
+                fclose($stream);
+            }, $file->filename . '.' . pathinfo($file->mime_type, PATHINFO_EXTENSION));
+        } catch (\Exception $e) {
+            Log::error('Erro ao baixar arquivo', ['error' => $e->getMessage(), 'path' => $file->path, 'file_id' => $file->id]);
+            abort(500, 'Erro ao baixar o arquivo');
         }
-
-        return response()->streamDownload(function () use ($stream) {
-            fpassthru($stream);
-            fclose($stream);
-        }, $file->filename . '.' . pathinfo($file->mime_type, PATHINFO_EXTENSION));
     }
 
     public function delete(Request $request, File $file)
