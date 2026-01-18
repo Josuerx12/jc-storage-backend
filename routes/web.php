@@ -20,7 +20,7 @@ Route::get('/files/{file}', [FileController::class, 'download'])
 ->missing(fn () => abort(404, 'Arquivo não encontrado'))
 ->middleware('signed');
 
-Route::get('/public/files/{file}', [FileController::class, 'publicDownload'])
+Route::get('/download/{file}', [FileController::class, 'publicDownload'])
 ->missing(fn () => abort(404, 'Arquivo não encontrado'))
 ->name('files.public.download');
 
