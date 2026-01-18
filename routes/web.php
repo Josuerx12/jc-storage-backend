@@ -21,6 +21,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [UserController::class, 'webLogin']);
     Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [UserController::class, 'webRegister'])->name('register.submit');
+
+    Route::get('/files/{id}', [FileController::class, 'download'])
+    ->name('files.download')
+    ->middleware('signed');
+
+    Route::get('/public/files/{id}', [FileController::class, 'publicDownload'])
+    ->name('files.public.download');
 });
 
 // Protected routes (auth only)
@@ -67,10 +74,3 @@ Route::middleware('auth')->group(function () {
     ->route('dashboard.buckets.files', $bucket)
     ->with('error', 'Arquivo não encontrado.'));
 });
-
-Route::get('/files/{id}', [FileController::class, 'download'])
-    ->name('files.download')
-    ->middleware('signed');
-
-Route::get('/public/files/{id}', [FileController::class, 'publicDownload'])
-    ->name('files.public.download');
